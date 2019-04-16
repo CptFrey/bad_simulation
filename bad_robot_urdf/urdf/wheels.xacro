@@ -37,8 +37,8 @@
          244.8696 rad/s -->
   <!-- <xacro:property name="axle_eff_limit" value="5.12766"/>
   <xacro:property name="axle_vel_limit" value="244.8696"/> -->
-  <xacro:property name="axle_eff_limit" value="5.12766"/>
-  <xacro:property name="axle_vel_limit" value="244.8696"/>
+  <xacro:property name="axle_eff_limit" value="1.12766"/>
+  <xacro:property name="axle_vel_limit" value="10.8696"/>
 
   <!-- These constants are used to simulate a Traxxas 2056 servo operated at
        6 V. servo_stall_torque is measured in N m. servo_no_load_speed is

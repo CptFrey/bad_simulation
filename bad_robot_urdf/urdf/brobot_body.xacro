@@ -10,7 +10,7 @@
     <xacro:property name="real_bodylen" value="0.4" />
     <xacro:property name="real_bodywidth" value="0.2" />
     <xacro:property name="real_bodyheight" value="0.11" />
-    <xacro:property name="body_mass" value="10.0" />
+    <xacro:property name="body_mass" value="2.0" />
     
     
     <xacro:property name="bodyclearance" value="0.01" />  <!--clearance from bottom of box to ground--> 
