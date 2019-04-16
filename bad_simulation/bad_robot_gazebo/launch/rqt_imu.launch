@@ -1,0 +1,21 @@
+<launch>
+
+<!-- Seems to not start the topics -->
+ <!-- RQT Plot -->
+  <node name="rqt_orientation"
+        pkg="rqt_plot"
+        type="rqt_plot"
+        args="/imu_data/orientation/x:y:z" />
+ <!-- RQT Plot -->
+  <node name="rqt_angular_velocity"
+        pkg="rqt_plot"
+        type="rqt_plot"
+        args="/imu_data/angular_velocity/x:y:z" />
+ <!-- RQT Plot -->
+  <node name="rqt_linear_acceleration"
+        pkg="rqt_plot"
+        type="rqt_plot"
+        args="/imu_data/linear_acceleration/x:y:z" />
+
+
+</launch>
