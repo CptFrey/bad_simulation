@@ -24,7 +24,7 @@
 
     <!-- Position of wheels to body -->
     <xacro:property name="front_offset" value="0.08" />
-    <xacro:property name="wheel_radius" value="0.033" /> 
+    <xacro:property name="wheel_radius" value="${0.14605/2}" /> 
     <xacro:property name="front_wheelX" value="${-wheel_radius+real_bodylen/2}" /> 
     <xacro:property name="rear_wheelX" value="${-wheel_radius+real_bodylen/2}" />  
     <xacro:property name="wheelY" value="${real_bodywidth/2}" />   
