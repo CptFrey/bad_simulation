@@ -12,9 +12,9 @@
        inset from the outer edge of the tire. It is set so that each wheel
        is a "zero offset" wheel. hex_hub_depth = tire_width / 2 -
        axle_length. -->
-  <xacro:property name="hub_dia" value="${0.09652}"/>
-  <xacro:property name="tire_dia" value="${0.14605}"/>
-  <xacro:property name="tire_width" value="0.0889"/>
+  <xacro:property name="hub_dia" value="${0.03652}"/>
+  <xacro:property name="tire_dia" value="${0.06605}"/>
+  <xacro:property name="tire_width" value="0.0189"/>
   <xacro:property name="wheel_mass" value="0.29"/>
 
   <!-- <xacro:property name="hub_dia" value="0.06"/>

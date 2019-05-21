@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+<robot 
+     xmlns:xacro="http://www.ros.org/wiki/xacro" name="brobot">
+     <!-- define the base-link origin to lie at floor level, between the drive wheels-->
+     <!--main body is a simple box; origin is a center of box-->
+    <xacro:property name="vis_bodylen" value="0.4" />
+    <xacro:property name="vis_bodywidth" value="0.1" />
+    <xacro:property name="vis_bodyheight" value="0.11" />
+
+    <xacro:property name="real_bodylen" value="0.4" />
+    <xacro:property name="real_bodywidth" value="0.2" />
+    <xacro:property name="real_bodyheight" value="0.11" />
+    <xacro:property name="body_mass" value="20.0" />
+    <xacro:property name="bodyclearance" value="0.0" />  <!--clearance from bottom of box to ground--> 
+
+    <!-- "track" is the distance between the drive wheels -->
+    <xacro:property name="track" value="${real_bodywidth}" />
+    <xacro:property name="sonar_offset" value="-0.18" />  <!--clearance from bottom of box to ground--> 
+
+    <!-- Wheels -->
+    <xacro:property name="wheel_radius" value="${0.14605/2}" /> 
+    <xacro:property name="front_wheelX" value="${-wheel_radius+real_bodylen/2}" /> 
+    <xacro:property name="rear_wheelX" value="${-wheel_radius+real_bodylen/2}" />  
+    <xacro:property name="wheelY" value="${real_bodywidth/2}" />   
+    <xacro:property name="wheelZ" value="${wheel_radius-0.1}" /> 
+
+  <!-- caster wheel radius and height -->
+  <!-- caster wheel mass -->
+  <xacro:property name="caster_f_height" value="${0.14605}" /> 
+  <xacro:property name="caster_f_radius" value="0.025" /> 
+  <xacro:property name="caster_f_mass" value="0.5" /> <!-- in kg-->
+
+
+
+  <!-- caster wheel radius and height -->
+  <!-- caster wheel mass -->
+  <xacro:property name="caster_b_height" value="0.04" /> 
+  <xacro:property name="caster_b_radius" value="0.025" /> 
+  <xacro:property name="caster_b_mass" value="0.5" /> <!-- in kg-->
+
+    <!-- Material -->
+    <material name="chassis_mat">
+      <color rgba="0.5 0.5 0.5 1"/>
+    </material>
+    <!--here is a default inertia matrix with small, but legal values; use this when don't need accuracy for I -->
+    <!--model will assign inertia matrix dominated by main body box -->
+    <xacro:macro name="default_inertial" params="mass *origin">
+        <inertial>
+          <xacro:insert_block name="origin"/>
+          <mass value="${mass}" />
+          <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+            iyy="0.001" iyz="0.0"
+            izz="0.001" />
+        </inertial>
+    </xacro:macro>
+
+    <!-- Inertia of a solid cuboid. Width is measured along the x axis, depth
+       along the y axis, and height along the z axis. -->
+  <!-- <xacro:macro name="solid_cuboid_inertial"
+               params="width depth height mass *origin">
+    <inertial>
+      <xacro:insert_block name="origin"/>
+      <mass value="${mass}"/>
+      <inertia ixx="${mass * (depth * depth + height * height) / 12}"
+               ixy="0" ixz="0"
+               iyy="${mass * (width * width + height * height) / 12}"
+               iyz="0"
+               izz="${mass * (width * width + depth * depth) / 12}"/>
+    </inertial>
+  </xacro:macro> -->
+
+  <xacro:macro name="solid_cuboid_inertial"
+               params="width depth height mass *origin">
+    <inertial>
+      <xacro:insert_block name="origin"/>
+      <mass value="${mass}"/>
+      <inertia ixx="0.01"
+               ixy="0" ixz="0"
+               iyy="0.01"
+               iyz="0"
+               izz="0.01"/>
+    </inertial>
+  </xacro:macro>
+
+<!-- ################################################################################################# -->
+<!-- Body -->
+<!-- ################################################################################################# -->
+
+  <!-- Base Link -->
+  <!-- base_link must have geometry so that its axes can be displayed in
+       rviz. -->
+  <link name="base_link">
+    <visual>
+    <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="chassis_mat"/>
+    </visual>
+
+   <!-- Does this need a collision box? -->
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+
+    <xacro:default_inertial mass="${0.01}">
+    <origin xyz="0 0 0"/>
+    </xacro:default_inertial>
+  </link>
+  <gazebo reference="base_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+<!-- Joint between Base_Link and Chassis -->
+  <joint name="base_link_to_chassis" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis"/>
+  </joint>
+
+  <!-- Chassis -->
+  <link name="chassis">
+    <visual>
+      <origin xyz="0 0 ${vis_bodyheight/2+bodyclearance}"/>
+      <geometry>
+        <box size="${vis_bodylen} ${vis_bodywidth} ${vis_bodyheight}"/>
+      </geometry>
+      <material name="chassis_mat"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${real_bodyheight/2+bodyclearance}"/>
+      <geometry>
+        <box size="${real_bodylen} ${real_bodywidth} ${real_bodyheight}"/>
+      </geometry>
+    </collision>
+
+  <xacro:solid_cuboid_inertial
+        width="${real_bodylen}" depth="${real_bodywidth}"
+        height="${real_bodyheight}" mass="${body_mass}">
+      <origin xyz="0 0 ${real_bodyheight/2+bodyclearance}"/>
+    </xacro:solid_cuboid_inertial>
+  </link>
+  <gazebo reference="chassis">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+<!-- #################################################################################################### -->
+<!-- Wheels -->
+<!-- #################################################################################################### -->
+  <xacro:include filename="$(find bad_robot_urdf)/urdf/wheels.xacro"/>
+
+  <xacro:rear_wheel lr_prefix="left" fr_prefix="front"
+                     lr_reflect="1" fr_reflect="1" 
+                     x="${front_wheelX}" y="${wheelY}" z="${wheelZ}"/>
+  <xacro:rear_wheel lr_prefix="right" fr_prefix="front"
+                     lr_reflect="-1" fr_reflect="1"
+                     x="${front_wheelX}" y="${wheelY}" z="${wheelZ}"/>
+
+<!-- ################################################################################################# -->
+<!-- Caster Wheel Macro -->
+<!-- ################################################################################################# -->
+
+  <!-- <xacro:rear_wheel lr_prefix="left" fr_prefix="rear"
+                    lr_reflect="1" fr_reflect="-1"
+                    x="${rear_wheelX}" y="${wheelY}" z="${wheelZ}"/>
+  <xacro:rear_wheel lr_prefix="right" fr_prefix="rear"
+                    lr_reflect="-1" fr_reflect="-1"
+                    x="${rear_wheelX}" y="${wheelY}" z="${wheelZ}"/>
+
+
+
+  <gazebo reference="right_front_wheel">
+    <mu1>100000.0</mu1>
+    <mu2>100000.0</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="left_front_wheel">
+    <mu1>100000.0</mu1>
+    <mu2>100000.0</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="right_rear_wheel">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="left_rear_wheel">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo> -->
+
+
+
+<!--Caster back  -->
+
+    <link name="caster_back_link">
+
+    <visual>
+      <origin xyz="0 0 0 " rpy="${M_PI/2} 0 0" /> 
+
+      <geometry>
+
+	<sphere radius="${caster_b_radius}" />
+
+      </geometry>
+      <material name="Black" />
+    </visual>  
+
+      <collision>
+        <geometry>
+		<sphere radius="${caster_b_radius}" />
+        </geometry>
+      <origin xyz="0 0 0 " rpy="${M_PI/2} 0 0" /> 
+      </collision>      
+      <inertial>
+        <mass value="${caster_b_mass}" />
+        <origin xyz="0 0 0" />        
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0" 
+                 izz="0.001" />
+      </inertial>
+    </link>
+
+    <joint name="caster_back_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="caster_back_link"/>
+      <origin xyz="${-rear_wheelX} ${0.0} ${wheelZ}" rpy="${-M_PI/2} 0 0"/>
+    </joint>
+
+  <gazebo reference="caster_back_link">
+    <turnGravityOff>false</turnGravityOff>
+        <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+
+
+
+<!-- ################################################################################################# -->
+<!-- Sonar -->
+<!-- ################################################################################################# -->
+  <!-- <xacro:include filename="$(find bad_robot_urdf)/urdf/sonar_model.xacro"/>
+
+  <sonar_sensor parent="base_link" name="U_VL" ros_topic="/Sonar/U_VL" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="${real_bodylen/2} ${real_bodywidth/2} ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} 0.785" />
+  </sonar_sensor>
+
+  <sonar_sensor parent="base_link" name="U_VM" ros_topic="/Sonar/U_VM" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="${real_bodylen/2} 0 ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} 0" />
+  </sonar_sensor>
+
+  <sonar_sensor parent="base_link" name="U_VR" ros_topic="/Sonar/U_VR" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="${real_bodylen/2} ${-real_bodywidth/2} ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} -0.785" />
+  </sonar_sensor>
+
+  <sonar_sensor parent="base_link" name="U_SL" ros_topic="/Sonar/U_SL" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="0 ${real_bodywidth/2} ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} 1.57" />
+  </sonar_sensor>
+
+  <sonar_sensor parent="base_link" name="U_SR" ros_topic="/Sonar/U_SR" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="0 ${-real_bodywidth/2} ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} -1.57" />
+  </sonar_sensor>
+
+  <sonar_sensor parent="base_link" name="U_HL" ros_topic="/Sonar/U_HL" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="${-real_bodylen/2} ${real_bodywidth/2} ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} 2.356" />
+  </sonar_sensor>
+
+    <sonar_sensor parent="base_link" name="U_HM" ros_topic="/Sonar/U_HM" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="${-real_bodylen/2} 0 ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} 3.14" />
+  </sonar_sensor>
+
+  <sonar_sensor parent="base_link" name="U_HR" ros_topic="/Sonar/U_HR" update_rate="10" min_range="0.05" max_range="3" field_of_view="56" ray_count="2" >
+    <origin xyz="${-real_bodylen/2} ${-real_bodywidth/2} ${bodyclearance+real_bodyheight/2}" rpy="0 ${sonar_offset} -2.356" />
+  </sonar_sensor> -->
+
+<!-- ################################################################################################# -->
+<!-- Lidar -->
+<!-- ################################################################################################# -->
+  <!--Lidar Joint-->
+  <!-- <joint name="lidar_joint" type="fixed">
+      <axis xyz="0 1 0" />
+      <origin xyz="0 0 ${bodyclearance+real_bodyheight+0.025}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="lidar_link"/>
+  </joint> -->
+
+<!-- Lidar Link-->
+  <!-- <link name="lidar_link">
+      <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+              <box size="0.05 0.05 0.05" />
+          </geometry>
+          <material name="sick_grey">
+              <color rgba="0.7 0.5 0.3 1.0"/>
+          </material>
+      </visual>
+      <inertial>
+          <mass value="4.0" />
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+      </inertial>
+  </link> -->
+<!-- ################################################################################################# -->
+<!-- Kinect -->
+<!-- ################################################################################################# -->
+  <!-- attach the kinect to the mobile robot -->
+  <!-- <joint name="kinect_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="kinect_link" />  
+    <origin rpy="0 0 0 " xyz="${real_bodywidth} 0 ${bodyclearance+real_bodyheight+0.025}"/>
+  </joint>    -->
+  <!-- kinect depth frame has a different viewpoint; publish it separately-->   
+<!-- ################################################################################################# -->
+<!-- Camera -->
+<!-- ################################################################################################# -->
+  <!-- attach the camera to the mobile robot -->
+  <!-- <joint name="camera_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="camera_link" />  
+    <origin rpy="0 0 0 " xyz="${real_bodywidth} 0 ${bodyclearance+real_bodyheight+0.025}"/>
+  </joint>   -->
+
+<!-- #################################################################################################### -->
+<!-- Gazebo Settings -->
+<!-- #################################################################################################### -->
+
+ <gazebo>
+    <!-- <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <legacyModeNS>True</legacyModeNS>  -->
+    <!-- Needed otherwise Error Message, maybe just needs robotNamespace as a parameter -->
+    <!-- </plugin> -->
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+    <alwaysOn>true</alwaysOn>
+    <updateRate>100</updateRate>
+    <legacyMode>true</legacyMode>
+    <leftJoint>right_front_axle</leftJoint>
+    <rightJoint>left_front_axle</rightJoint>
+    <wheelSeparation>${track}</wheelSeparation>
+    <wheelDiameter>${0.14605}</wheelDiameter>
+    <torque>200</torque>
+    <commandTopic>cmd_vel</commandTopic>
+    <odometryTopic>odom</odometryTopic>
+    <odometryFrame>odom</odometryFrame>
+    <robotBaseFrame>base_link</robotBaseFrame>
+    <!--don't publish wheel TF, so it does not conflict with robot_state_publisher -->
+    <publishWheelTF>false</publishWheelTF>
+    <publishWheelJointState>true</publishWheelJointState>
+  </plugin>
+ </gazebo> 
+
+</robot>

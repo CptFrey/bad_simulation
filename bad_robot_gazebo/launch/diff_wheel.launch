@@ -29,7 +29,7 @@
   </include>
 
 <!-- Convert xacro model file and put on parameter server -->
-<param name="robot_description" command="$(find xacro)/xacro.py '$(find bad_robot_urdf)/urdf/brobot.xacro'" />
+<param name="robot_description" command="$(find xacro)/xacro.py '$(find bad_robot_urdf)/urdf/diff_wheeled_robot.xacro'" />
 
 <!-- Spawn the robot from parameter server into Gazebo -->
     <node name="spawn_vehicle" pkg="gazebo_ros" type="spawn_model"
@@ -66,6 +66,6 @@
 <!-- Controller -->
 		<node pkg="joy" name="Joystick" type="joy_node"/>
     <!-- <node pkg="bad_robot_gazebo" name="joy_to_ackermann" type="ackermann_cmd_vel.py"/> -->
-    <node pkg="bad_robot_gazebo" name="control_to_cmd_vel" type="control.py"/>
+    <node pkg="bad_robot_gazebo" name="joy_to_ackermann" type="control.py"/>
 
 </launch>
