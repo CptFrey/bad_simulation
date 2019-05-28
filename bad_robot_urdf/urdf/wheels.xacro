@@ -17,36 +17,10 @@
   <xacro:property name="tire_width" value="0.0189"/>
   <xacro:property name="wheel_mass" value="0.29"/>
 
-  <!-- <xacro:property name="hub_dia" value="0.06"/>
-  <xacro:property name="tire_dia" value="0.066"/>
-  <xacro:property name="tire_width" value="0.027"/>
-  <xacro:property name="wheel_mass" value="0.29"/> -->
-  <!-- The specifications for a Titan(R) 550 motor could not be found, so the
-       stall torque of a Mabuchi Motor(R) RS-550VC-7525 motor was used instead.
-
-       num_spur_gear_teeth = 68
-       num_pinion_gear_teeth = 19
-       final_gear_ratio = (num_spur_gear_teeth / num_pinion_gear_teeth) *
-         5.22 = 18.68
-       stall_torque = 0.549 N m
-       axle_eff_limit = ((2 * stall_torque) * final_gear_ratio) / 4 =
-         5.12766 N m
-
-       max_speed = 40 mph (30+ mph) = 17.8816 m/s
-       axle_vel_limit = (2 * pi) * (max_speed / (pi * tire_dia)) =
-         244.8696 rad/s -->
-  <!-- <xacro:property name="axle_eff_limit" value="5.12766"/>
-  <xacro:property name="axle_vel_limit" value="244.8696"/> -->
   <xacro:property name="axle_eff_limit" value="1.12766"/>
   <xacro:property name="axle_vel_limit" value="10.8696"/>
 
-  <!-- These constants are used to simulate a Traxxas 2056 servo operated at
-       6 V. servo_stall_torque is measured in N m. servo_no_load_speed is
-       measured in rad/s. -->
-  <!-- <xacro:property name="servo_stall_torque" value="0.5649"/>
-  <xacro:property name="servo_no_load_speed" value="4.553"/> -->
-
-    <xacro:property name="servo_stall_torque" value="0.5649"/>
+  <xacro:property name="servo_stall_torque" value="0.5649"/>
   <xacro:property name="servo_no_load_speed" value="4.553"/>
 
 <!-- Materials -->

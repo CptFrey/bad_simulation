@@ -292,7 +292,7 @@ class _AckermannCtrlr(object):
             steer_ang_changed, center_y = \
                 self._ctrl_steering(steer_ang, steer_ang_vel, delta_t)
             self._ctrl_axles(speed, accel, delta_t, steer_ang_changed,
-                             center_y)
+                            center_y)
 
             # Publish the steering and axle joint commands.
             self._left_steer_cmd_pub.publish(self._theta_left)

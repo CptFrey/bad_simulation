@@ -1,5 +1,4 @@
 <launch>
-
   <arg name="x" default="0.0"/>
   <arg name="y" default="0.0"/>
   <arg name="z" default="0.9"/>
@@ -30,6 +29,7 @@
 
 <!-- Convert xacro model file and put on parameter server -->
 <param name="robot_description" command="$(find xacro)/xacro.py '$(find bad_robot_urdf)/urdf/brobot.xacro'" />
+<!-- brobot -->
 
 <!-- Spawn the robot from parameter server into Gazebo -->
     <node name="spawn_vehicle" pkg="gazebo_ros" type="spawn_model"
@@ -53,19 +53,19 @@
 
 <!-- Load the joint controllers. One of these publishes the joint states
          to joint_states. -->
-  <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner"
-    args="$(find bad_robot_gazebo)/config/brobot_joint_ctrlr_params.yaml"/> -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner"
+    args="$(find bad_robot_gazebo)/config/brobot_joint_ctrlr_params.yaml"/>
 
     <!-- Control the steering, axle, and shock absorber joints. -->
-    <!-- <node name="ackermann_controller" pkg="bad_robot_gazebo"
+    <node name="ackermann_controller" pkg="bad_robot_gazebo"
           type="ackermann_controller">
       <param name="cmd_timeout" value="$(arg cmd_timeout)"/>
       <rosparam file="$(find bad_robot_gazebo)/config/brobot_ackermann_ctrlr_params.yaml" command="load"/>
-    </node> -->
+    </node>
 
 <!-- Controller -->
 		<node pkg="joy" name="Joystick" type="joy_node"/>
-    <!-- <node pkg="bad_robot_gazebo" name="joy_to_ackermann" type="ackermann_cmd_vel.py"/> -->
-    <node pkg="bad_robot_gazebo" name="control_to_cmd_vel" type="control.py"/>
+    <node pkg="bad_robot_gazebo" name="joy_to_ackermann" type="ackermann_cmd_vel.py"/>
+    <!-- <node pkg="bad_robot_gazebo" name="control_to_cmd_vel" type="control.py"/> -->
 
 </launch>

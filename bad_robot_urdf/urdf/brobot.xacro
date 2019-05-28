@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <robot 
      xmlns:xacro="http://www.ros.org/wiki/xacro" name="brobot">
-  <xacro:include filename="$(find bad_robot_urdf)/urdf/brobot_body_test.xacro" />
-  <!-- <xacro:include filename="$(find bad_robot_urdf)/urdf/imu.xacro" /> -->
-  <!-- <xacro:include filename="$(find bad_robot_urdf)/urdf/lidar.xacro" /> -->
-  <!-- <xacro:include filename="$(find bad_robot_urdf)/urdf/kinect.xacro" />  
-  <xacro:include filename="$(find bad_robot_urdf)/urdf/camera.xacro" />   -->
+  <xacro:include filename="$(find bad_robot_urdf)/urdf/brobot_body.xacro" />
+  <xacro:include filename="$(find bad_robot_urdf)/urdf/imu.xacro" />
+  <xacro:include filename="$(find bad_robot_urdf)/urdf/lidar.xacro" />
+  <xacro:include filename="$(find bad_robot_urdf)/urdf/kinect.xacro" />  
+  <xacro:include filename="$(find bad_robot_urdf)/urdf/camera.xacro" />  
   
 </robot>
 

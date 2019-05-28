@@ -20,7 +20,14 @@ def send_vel(data):
         cmd_vel.speed  = -1
     else:
         cmd_vel.speed = 0
-    cmd_vel.steering_angle = data.axes[0]
+    # Rotation
+    if data.axes[0] > 0.07:
+        cmd_vel.steering_angle = data.axes[0]
+    elif data.axes[0] < -0.07:
+        cmd_vel.steering_angle = data.axes[0]
+    else:
+        cmd_vel.steering_angle = 0
+    # cmd_vel.steering_angle = data.axes[0]
     pub1.publish(cmd_vel)
 
 
