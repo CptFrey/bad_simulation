@@ -45,7 +45,7 @@
     <param name="publish_frequency" type="double" value="30.0" />
 
 <!-- start a joint_state_publisher -->
-<!-- Anpassen? siehe ackermann -->
+<!-- Anpassen? siehe ackermann !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! STILL HAVE TO CHECK THIS!-->
 <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
 <!-- launch rviz using a specific config file -->
@@ -66,6 +66,8 @@
 <!-- Controller -->
 		<node pkg="joy" name="Joystick" type="joy_node"/>
     <node pkg="bad_robot_gazebo" name="joy_to_ackermann" type="ackermann_cmd_vel.py"/>
+    <node pkg="bad_robot_gazebo" name="odometrie" type="odom_c"/>
+    
     <!-- <node pkg="bad_robot_gazebo" name="control_to_cmd_vel" type="control.py"/> -->
 
 </launch>

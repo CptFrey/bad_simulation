@@ -6,6 +6,4 @@
   <xacro:include filename="$(find bad_robot_urdf)/urdf/lidar.xacro" />
   <xacro:include filename="$(find bad_robot_urdf)/urdf/kinect.xacro" />  
   <xacro:include filename="$(find bad_robot_urdf)/urdf/camera.xacro" />  
-  
 </robot>
-
