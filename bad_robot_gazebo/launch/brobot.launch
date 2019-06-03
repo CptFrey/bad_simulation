@@ -66,8 +66,4 @@
 <!-- Controller -->
 		<node pkg="joy" name="Joystick" type="joy_node"/>
     <node pkg="bad_robot_gazebo" name="joy_to_ackermann" type="ackermann_cmd_vel.py"/>
-    <!-- <node pkg="bad_robot_gazebo" name="odometrie" type="odom_calc"/> -->
-    
-    <!-- <node pkg="bad_robot_gazebo" name="control_to_cmd_vel" type="control.py"/> -->
-
 </launch>
