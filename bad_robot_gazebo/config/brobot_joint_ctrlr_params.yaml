@@ -5,7 +5,7 @@
 # Publish the joint states to joint_states.
 joint_state_ctrlr:
   type: joint_state_controller/JointStateController
-  publish_rate: 60
+  publish_rate: 30
 
 # Define Controlling Elements
 # Orignal Parameters
@@ -50,17 +50,17 @@ right_front_steering_ctrlr:
 left_front_axle_ctrlr:
   joint: left_front_axle
   type: effort_controllers/JointVelocityController
-  pid: {p: 1.0, i: 0.1, d: 0.0, i_clamp: 0.0}
+  pid: {p: 3.0, i: 1.5, d: 0.0, i_clamp: 0.0}
 right_front_axle_ctrlr:
   joint: right_front_axle
   type: effort_controllers/JointVelocityController
-  pid: {p: 1.0, i: 0.1, d: 0.0, i_clamp: 0.0}
+  pid: {p: 3.0, i: 1.5, d: 0.0, i_clamp: 0.0}
 left_rear_axle_ctrlr:
   joint: left_rear_axle
   type: effort_controllers/JointVelocityController
-  pid: {p: 1.0, i: 0.1, d: 0.0, i_clamp: 0.0}
+  pid: {p: 3.0, i: 1.5, d: 0.0, i_clamp: 0.0}
 right_rear_axle_ctrlr:
   joint: right_rear_axle
   type: effort_controllers/JointVelocityController
-  pid: {p: 1.0, i: 0.1, d: 0.0, i_clamp: 0.0}
+  pid: {p: 3.0, i: 1.5, d: 0.0, i_clamp: 0.0}
 
